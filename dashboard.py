@@ -46,6 +46,8 @@ df = pd.DataFrame(dados_presidente, columns=["nm", "n", "pvap", "vap"]).rename(
 df_sp = pd.DataFrame(dados_governador, columns=["nm", "n", "pvap", "vap"]).rename(
     columns=rename_columns
 )
+df["Porcentagem"] = df["Porcentagem"].apply(lambda x: x.replace(",", ".")).astype(float)
+df_sp["Porcentagem"] = df_sp["Porcentagem"].apply(lambda x: x.replace(",", ".")).astype(float)
 
 st.sidebar.header("Opções")
 df_checkbox = st.sidebar.checkbox("Mostrar Tabela Dados Presidente")
@@ -58,7 +60,7 @@ chart_presidente = (
     .mark_bar()
     .encode(
         x=alt.X("Nome:N", title="Nome", axis=alt.Axis(labelAngle=0)),
-        y=alt.Y("Porcentagem:Q", title="Porcentagem (%)"),
+        y=alt.Y("Porcentagem", title="Porcentagem (%)"),
         color= alt.Color("Nome:N", scale=alt.Scale(scheme="category10")),
         tooltip= ["Nome:N", "Porcentagem:Q"]
     ).properties(width=800, height=600)
